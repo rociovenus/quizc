@@ -28,8 +28,14 @@ class DateConfiguration(QuestionConfiguration):
             return datetime.datetime.strptime(value, DateConfiguration.DATE_FORMAT)
         except ValueError:
             return None
-
-
+class NumericConfiguration(QuestionConfiguration):
+ 
+    def __init__(self):
+        QuestionConfiguration.__init__(self, False, [ValidatorType.REQUIRED, ValidatorType.MIN])
+    def convert_value(self, value):
+        value=int(value)
+        
+        return value
 class PickOneQuestionConfiguration(QuestionConfiguration):
     def __init__(self):
         QuestionConfiguration.__init__(self, True, [ValidatorType.REQUIRED])
@@ -38,7 +44,8 @@ class PickOneQuestionConfiguration(QuestionConfiguration):
 class QuestionType(Enum):
     TEXT = (1, TextConfiguration())
     DATE = (2, DateConfiguration())
-    PICK_ONE = (3, PickOneQuestionConfiguration())
+    NUMERIC = (3,NumericConfiguration())
+    PICK_ONE = (4, PickOneQuestionConfiguration())
 
     def __init__(self, code, configuration):
         self.code = code
